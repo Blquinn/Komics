@@ -23,14 +23,20 @@ def run():
 def buildUI():
     if sys.platform == 'win32':
         output = subprocess.getoutput('pyuic5 ' + PATH + '\\mainwindow.ui -o ' + PATH + '\\ui\\main.py')
+        rc_output = subprocess.getoutput('pyrcc5.exe {} -o {}'.format((PATH + '\\icons.qrc'), (PATH + '\\icons_rc.py')))
     else:
         output = subprocess.getoutput('pyuic5' + PATH + '/mainwindow.ui -o ' + PATH + '/ui/main.py')
+        rc_output = subprocess.getoutput('pyrcc5 {} -o {}'.format((PATH + '/icons.qrc'), (PATH + '/icons_rc.py')))
 
     if output:
         print(output)
         print('Failure building ui files')
         sys.exit(1)
 
+    if rc_output:
+        print(rc_output)
+        print('Failure building resources')
+        sys.exit(1)
+
 if __name__ == "__main__":
-    print(PATH)
     run()

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>assets/icons/36/forward.png</file>
+        <file>assets/icons/36/magnify.png</file>
+        <file>assets/icons/36/play.png</file>
+        <file>assets/icons/36/skip-backward.png</file>
+        <file>assets/icons/36/skip-forward.png</file>
+        <file>assets/icons/36/skip-next.png</file>
+        <file>assets/icons/36/skip-previous.png</file>
+        <file>assets/icons/36/step-backward.png</file>
+        <file>assets/icons/36/step-forward.png</file>
+        <file>assets/icons/36/fit_to_width.png</file>
+    </qresource>
+</RCC>
