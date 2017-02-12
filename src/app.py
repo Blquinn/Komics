@@ -1,6 +1,12 @@
 import sys
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QFileDialog, QLabel, QGraphicsScene, QGraphicsPixmapItem
+from PyQt5.QtGui import QPixmap
 from ui.main import Ui_MainWindow
+
+
+
+# from src.mixins.files import Files
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -9,6 +15,8 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         self.main()
         self.ui = None
+        self.pixmap = None
+        self.label = None
 
     def main(self):
         """main is responsible for setting up the gui"""
@@ -17,24 +25,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.buttons()
         self.show()
 
-    # def buttons(self):
-    #     Ui_MainWindddow.btnQuit
-
     def quit(self):
         """quit exits the application gracefully"""
         print('Komics exited properly.')
         sys.exit()
 
-    def openFile(self):
-        # file = QtWidgets.QFileDialog.getExistingDirectory()
-        diag = QtWidgets.QFileDialog()
-        # diag.setNameFilter('jpg')
-        file = diag.getExistingDirectory()
-        pathobject = open(file, 'r')
-        print(pathobject)
-        # print(file)
-
     def buttons(self):
         self.ui.actionQuit.triggered.connect(self.quit)
         self.ui.actionOpen.triggered.connect(self.openFile)
-        # self.ui.btnOpenFile.clicked.connect(self.openFile)
+
+
+    def openFile(self):
+        diag = QFileDialog()
+        options = QFileDialog.options(diag)
+        fileName, _ = QFileDialog.getOpenFileName(diag, "QFileDialog.getOpenFileName()", "",
+                                                  "All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            print(fileName)
+            # self.label = QLabel('Cool pics')
+            # self.pixmap = QPixmap(fileName)
+            # self.label.setPixmap(pixmap)
+            # self.ui.graphicsView.
+            # scene = QGraphicsScene()
+            # image = QPixmap(fileName)
+            # item = QGraphicsPixmapItem(image)
+            # scene.addItem(item)
+            # self.ui.graphicsView.items(scene)

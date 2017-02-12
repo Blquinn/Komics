@@ -14,7 +14,18 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>-5</x>
+      <y>-9</y>
+      <width>901</width>
+      <height>651</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>pushButton</zorder>
+   <zorder>graphicsView</zorder>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
