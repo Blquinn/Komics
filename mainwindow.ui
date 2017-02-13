@@ -58,7 +58,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/skip-previous.png</normaloff>:/assets/icons/36/skip-previous.png</iconset>
+          <normaloff>:/images/assets/icons/36/skip-previous.png</normaloff>:/images/assets/icons/36/skip-previous.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -75,7 +75,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/skip-backward.png</normaloff>:/assets/icons/36/skip-backward.png</iconset>
+          <normaloff>:/images/assets/icons/36/skip-backward.png</normaloff>:/images/assets/icons/36/skip-backward.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -92,7 +92,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/step-backward.png</normaloff>:/assets/icons/36/step-backward.png</iconset>
+          <normaloff>:/images/assets/icons/36/step-backward.png</normaloff>:/images/assets/icons/36/step-backward.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -109,7 +109,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/forward.png</normaloff>:/assets/icons/36/forward.png</iconset>
+          <normaloff>:/images/assets/icons/36/forward.png</normaloff>:/images/assets/icons/36/forward.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -126,7 +126,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/step-forward.png</normaloff>:/assets/icons/36/step-forward.png</iconset>
+          <normaloff>:/images/assets/icons/36/step-forward.png</normaloff>:/images/assets/icons/36/step-forward.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -143,7 +143,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/skip-forward.png</normaloff>:/assets/icons/36/skip-forward.png</iconset>
+          <normaloff>:/images/assets/icons/36/skip-forward.png</normaloff>:/images/assets/icons/36/skip-forward.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -160,7 +160,7 @@
         </property>
         <property name="icon">
          <iconset resource="icons.qrc">
-          <normaloff>:/assets/icons/36/skip-next.png</normaloff>:/assets/icons/36/skip-next.png</iconset>
+          <normaloff>:/images/assets/icons/36/skip-next.png</normaloff>:/images/assets/icons/36/skip-next.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -305,7 +305,10 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionOpen_Directory"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionClose_Collection"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -314,7 +317,34 @@
     </property>
     <addaction name="actionAbout_Komics"/>
    </widget>
+   <widget class="QMenu" name="menuGo">
+    <property name="title">
+     <string>Go</string>
+    </property>
+    <addaction name="actionNext_Page"/>
+    <addaction name="actionPrevious_Page"/>
+    <addaction name="actionGoTo_Page"/>
+    <addaction name="separator"/>
+    <addaction name="actionStart_of_Collection"/>
+    <addaction name="actionEnd_of_Collection"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrevious_Collection"/>
+    <addaction name="actionNext_Collection"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionFit_to_Width"/>
+    <addaction name="actionFIt_to_Height"/>
+    <addaction name="actionBest_Fit"/>
+    <addaction name="actionZoom_Fit"/>
+    <addaction name="separator"/>
+    <addaction name="actionDouble_Page_Layout"/>
+   </widget>
    <addaction name="menuFIle"/>
+   <addaction name="menuGo"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionOpen">
@@ -325,7 +355,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>Open File or Archive</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -350,6 +380,105 @@
   <action name="actionAbout_Komics">
    <property name="text">
     <string>About Komics</string>
+   </property>
+  </action>
+  <action name="actionNext_Page">
+   <property name="text">
+    <string>Next Page</string>
+   </property>
+   <property name="shortcut">
+    <string>Right</string>
+   </property>
+  </action>
+  <action name="actionPrevious_Page">
+   <property name="text">
+    <string>Previous Page</string>
+   </property>
+   <property name="shortcut">
+    <string>Left</string>
+   </property>
+  </action>
+  <action name="actionGoTo_Page">
+   <property name="text">
+    <string>GoTo Page</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionEnd_of_Collection">
+   <property name="text">
+    <string>End of Collection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Right</string>
+   </property>
+  </action>
+  <action name="actionStart_of_Collection">
+   <property name="text">
+    <string>Start of Collection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Left</string>
+   </property>
+  </action>
+  <action name="actionPrevious_Collection">
+   <property name="text">
+    <string>Previous Collection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Right</string>
+   </property>
+  </action>
+  <action name="actionNext_Collection">
+   <property name="text">
+    <string>Next Collection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Left</string>
+   </property>
+  </action>
+  <action name="actionOpen_Directory">
+   <property name="text">
+    <string>Open Directory</string>
+   </property>
+  </action>
+  <action name="actionClose_Collection">
+   <property name="text">
+    <string>Close Collection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionStart_Slideshow">
+   <property name="text">
+    <string>Start Slideshow</string>
+   </property>
+  </action>
+  <action name="actionFit_to_Width">
+   <property name="text">
+    <string>Fit to Width</string>
+   </property>
+  </action>
+  <action name="actionFIt_to_Height">
+   <property name="text">
+    <string>FIt to Height</string>
+   </property>
+  </action>
+  <action name="actionBest_Fit">
+   <property name="text">
+    <string>Best Fit</string>
+   </property>
+  </action>
+  <action name="actionZoom_Fit">
+   <property name="text">
+    <string>Zoom Fit</string>
+   </property>
+  </action>
+  <action name="actionDouble_Page_Layout">
+   <property name="text">
+    <string>Double Page Layout</string>
    </property>
   </action>
  </widget>

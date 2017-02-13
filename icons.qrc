@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/images">
         <file>assets/icons/36/forward.png</file>
         <file>assets/icons/36/magnify.png</file>
         <file>assets/icons/36/play.png</file>
@@ -9,5 +9,15 @@
         <file>assets/icons/36/skip-previous.png</file>
         <file>assets/icons/36/step-backward.png</file>
         <file>assets/icons/36/step-forward.png</file>
+        <file>assets/icons/36/fit_to_width.png</file>
+        <file>assets/icons/36/arrow-expand.png</file>
+        <file>assets/icons/36/arrow-expand-all.png</file>
+        <file>assets/icons/36/double_page.png</file>
+        <file>assets/icons/36/fit_to_height.png</file>
+        <file>assets/icons/36/window.png</file>
+        <file>assets/icons/36/window_height.png</file>
+        <file>assets/icons/36/window_size.png</file>
+        <file>assets/icons/36/window_width.png</file>
+        <file>assets/icons/36/icon.png</file>
     </qresource>
 </RCC>

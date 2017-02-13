@@ -16,6 +16,7 @@ def run():
         from src.app import MainWindow
 
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("fusion")
     gui = MainWindow()
     print('Running application...')
     sys.exit(app.exec_())
