@@ -23,10 +23,10 @@ def run():
 
 def buildUI():
     if sys.platform == 'win32':
-        output = subprocess.getoutput('pyuic5 ' + PATH + '\\mainwindow.ui -o ' + PATH + '\\ui\\main.py')
+        output = subprocess.getoutput('pyuic5 {}\\mainwindow.ui -o {}\\ui\\main.py'.format(PATH, PATH))
         rc_output = subprocess.getoutput('pyrcc5.exe {} -o {}'.format((PATH + '\\icons.qrc'), (PATH + '\\icons_rc.py')))
     else:
-        output = subprocess.getoutput('pyuic5' + PATH + '/mainwindow.ui -o ' + PATH + '/ui/main.py')
+        output = subprocess.getoutput('pyuic5 {}/mainwindow.ui -o {}/ui/main.py'.format(PATH, PATH))
         rc_output = subprocess.getoutput('pyrcc5 {} -o {}'.format((PATH + '/icons.qrc'), (PATH + '/icons_rc.py')))
 
     if output:

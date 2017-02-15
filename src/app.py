@@ -1,11 +1,13 @@
 import sys
-from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QGraphicsScene
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets, QtCore
 from ui.main import Ui_MainWindow
 import os
 import re
 import rarfile
+
+# Local
+from src.photoviewer import PhotoViewer
 
 IMAGE_REGEX = re.compile(r".*\.(jpg|png|gif)$")
 FILE_TYPES = ('All Files (*)',
@@ -31,8 +33,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.workingFiles = None
         self.workingFileType = None  # Should be ( archive | dir )
         self.workingFileIndex = 0
+        self.scene = QGraphicsScene()
         self.ui.progressBar.hide()
+        self.ui.graphicsView = PhotoViewer(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ui.graphicsView.sizePolicy().hasHeightForWidth())
+        self.ui.graphicsView.setSizePolicy(sizePolicy)
+        self.ui.graphicsView.setObjectName("graphicsView")
+        self.ui.gridLayout.addWidget(self.ui.graphicsView, 1, 0, 1, 1)
+
         self.main()
+    # def resize(self, event):
+    #     print(event)
+        # self.ui.graphicsView.scale(self.width(), self.height())
 
     def main(self):
         """main is responsible for setting up the gui"""
@@ -63,13 +78,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.actionGoTo_Page.triggered.connect(self.pageGoTo)
         self.ui.actionPrevious_Collection.triggered.connect(self.archivePrevious)
         self.ui.actionNext_Collection.triggered.connect(self.archiveNext)
+        self.ui.actionZoom_In.triggered.connect(self.ui.graphicsView.zoomInKeys)
+        self.ui.actionZoom_Out.triggered.connect(self.ui.graphicsView.zoomOutKeys)
+        self.ui.actionScroll_Forward.triggered.connect(self.scrollHalfScreen)
+        self.ui.actionFull_Screen.triggered.connect(self.viewFullScreen)
 
         # Page Controls
         self.ui.btnArchivePrevious.clicked.connect(self.archivePrevious)
         self.ui.btnArchiveBeggining.clicked.connect(self.archiveBeggining)
-        self.ui.btnPageBack.clicked.connect(self.pageBack)
+        self.ui.btnPageBack.clicked.connect(self.loadPrev)
         self.ui.btnPageGoTo.clicked.connect(self.pageGoTo)
-        self.ui.btnPageForward.clicked.connect(self.pageForward)
+        self.ui.btnPageForward.clicked.connect(self.loadNext)
         self.ui.btnArchiveEnd.clicked.connect(self.archiveEnd)
         self.ui.btnArchiveNext.clicked.connect(self.archiveNext)
 
@@ -103,18 +122,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def archivePrevious(self):
         self.okayMessageBox('You pressed Previous Archive')
 
-    def pageBack(self):
-        if self.workingFiles:
-            self.loadPrev()
-        else:
-            self.okayMessageBox("Please open a file or archive.")
-
-    def pageForward(self):
-        if self.workingFiles:
-            self.loadNext()
-        else:
-            self.okayMessageBox('Please open a file or archive.')
-
     def pageGoTo(self):
         self.okayMessageBox('You pressed page goto')
 
@@ -141,6 +148,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
     """End Buttons"""
 
+    """Start Actions"""
+    def viewFullScreen(self):
+        self.ui.graphicsView.showFullScreen()
+
+    def showFullScreen(self):
+        self.ui.centralWidget.hide()
+        # self.ui.menuBar.hide()
+        # self.ui.graphicsView.showFullScreen()
+    """End Actions"""
+
     def showProgress(self):
         self.ui.progressBar.show()
         self.progress = 0
@@ -156,38 +173,50 @@ class MainWindow(QtWidgets.QMainWindow):
                                        message,
                                        QtWidgets.QMessageBox.Ok)
 
+    def scrollHalfScreen(self):
+        end = self.ui.graphicsView.scrollHalf()
+        if end:
+            self.loadNext()
+
     def loadImage(self, image):
+        self.scene.clear()
         if type(image) is str:
             pm = QtGui.QPixmap(image)
-            self.scene = QGraphicsScene()
-            self.scene.addPixmap(pm)
-            self.ui.graphicsView.setScene(self.scene)
+            # self.scene.addPixmap(pm)
+            # self.ui.graphicsView.setScene(self.scene)
+            self.ui.graphicsView.setPhoto(pm)
         elif type(image) is rarfile.Rar3Info:
             im_type = image.filename.split('.')[-1].strip().upper()
             bts = self.rf.read(image)
             pm = QtGui.QPixmap()
             pm.loadFromData(bts, im_type)
-            self.scene = QGraphicsScene()
-            self.scene.addPixmap(pm)
-            self.ui.graphicsView.setScene(self.scene)
+            self.ui.graphicsView.setPhoto(pm)
+            # self.scene.addPixmap(pm)
+            # self.ui.graphicsView.setScene(self.scene)
         else:
             self.okayMessageBox("Invalid image format")
 
     def loadPrev(self):
-        if self.workingFileIndex - 1 >= 0:
-            self.workingFileIndex -= 1
-            self.loadImage(self.workingFiles[self.workingFileIndex])
+        if self.workingFiles:
+            if self.workingFileIndex - 1 >= 0:
+                self.workingFileIndex -= 1
+                self.loadImage(self.workingFiles[self.workingFileIndex])
+            else:
+                self.workingFileIndex = 0
+                self.okayMessageBox("You've reached the begining of the collection")
         else:
-            self.workingFileIndex = 0
-            self.okayMessageBox("You've reached the begining of the collection")
+             self.okayMessageBox("Please open a file or archive.")
 
     def loadNext(self):
-        if self.workingFileIndex + 1 < len(self.workingFiles):
-            self.workingFileIndex += 1
-            self.loadImage(self.workingFiles[self.workingFileIndex])
+        if self.workingFiles:
+            if self.workingFileIndex + 1 < len(self.workingFiles):
+                self.workingFileIndex += 1
+                self.loadImage(self.workingFiles[self.workingFileIndex])
+            else:
+                self.workingFileIndex = 0
+                self.okayMessageBox("You've reached the end :(")
         else:
-            self.workingFileIndex = 0
-            self.okayMessageBox("There's no more :(")
+            self.okayMessageBox("Please open a file or archive.")
 
     def openDirectory(self):
         diag = QFileDialog()
@@ -220,6 +249,11 @@ class MainWindow(QtWidgets.QMainWindow):
                     for file in os.listdir(os.path.dirname(path))
                     if IMAGE_REGEX.match(file)
                 ]
+                for i, file in enumerate(self.workingFiles):
+                    if file == path:
+                        self.workingFileIndex = i
+                        break
+
                 if not self.workingFiles:
                     self.okayMessageBox('No valid files found in directory')
                 else:
@@ -234,4 +268,3 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.loadImage(self.workingFiles[0])
             else:
                 self.okayMessageBox("Please use a valid filetype")
-
